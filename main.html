@@ -7,7 +7,7 @@
     <title>Event Planner</title>
   </head>
   <body>
-    <form>
+    <form class="event-form">
       <input
         type="text"
         name="eventName"
@@ -17,7 +17,13 @@
       />
       <input type="date" name="eventDate" id="eventDate" required />
       <input type="time" name="eventTime" id="eventTime" required />
-      <button type="submit">Add Event</button>
+      <button type="submit" id="submit">Add Event</button>
     </form>
+    <div class="event-list-container">
+     <div class="event-list"></div>
+     <p>you have no event to display</p>
+     <button>Clear Events</button>
+     </div>
+    <script src="./Js/main.js"></script>
   </body>
 </html>
