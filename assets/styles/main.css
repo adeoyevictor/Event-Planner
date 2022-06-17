@@ -1,3 +1,102 @@
+@import url('https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/plus-jakarta-display.min.css');
+@import url('https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/plus-jakarta-text.min.css');
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 .hidden {
   display: none;
+}
+.navigation{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #5141a4;
+  padding: 1rem
+}
+.navigation .header{
+  color: #fff;
+  font-family: 'Plus Jakarta Display';
+  font-size: 28px;
+}
+.sign-out button{
+  padding: 10px 20px;
+  background-color: #fff;
+  color: #5141a4;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: 'Plus Jakarta Text';
+  white-space: nowrap;
+}
+#submit{
+  padding: 10px 20px;
+  background-color: #5141a4;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: 'Plus Jakarta Text';
+  white-space: nowrap;
+}
+.greeting{
+  text-align: center;
+  padding: 50px 0;
+  font-family: 'Plus Jakarta Display';
+  font-size: 28px;
+  color: #14213D;
+}
+form{
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: space-between;
+  width: 70%;
+  align-items: center;
+  margin: 0 auto;
+  margin-bottom: 50px;
+}
+input{
+  width: 100%;
+  margin-right: 5px;
+  padding: 8px 16px;
+  border: none;
+  outline: none;
+  height: 40px;
+  border: 2px solid #434D64;
+  border-radius: 4px;
+  font-family: 'Plus Jakarta Text';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #434D64;
+}
+.event-list-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+  margin: 0 auto;
+}
+.event-list{
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%
+}
+li{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #F6F6F6;
+  border-left: 4px solid #5141a4;
+  padding: 8px 16px;
+}
+li span{
+  
 }
