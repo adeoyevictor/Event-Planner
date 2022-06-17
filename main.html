@@ -8,18 +8,21 @@
     <link rel="stylesheet" href="./assets/styles/main.css">
   </head>
   <body>
+    <nav class="navigation">
+      <h1 class="header">Event Planner</h1>
+      <a href="./logout.html" class="sign-out"><button>Sign Out</button></a>
+    </nav>
     <div>
-      <p>Hi, <span class="userName"></span></p>
+      <h2 class="greeting">Hi,<span class="userName"> Chioma</span></h2>
       <form class="event-form">
-        <p class="alert"></p>
-        <h4>Event Planner</h4>
+        <!-- <p class="alert"></p> -->
         <input type="text" id="eventName" placeholder="Event Name" required />
         <input type="date" id="eventDate" required />
         <input type="time" id="eventTime" required />
         <button type="submit" id="submit">Add Event</button>
       </form>
       <div class="event-list-container">
-        <ul class="event-list" style="background-color: blue;">
+        <ul class="event-list">
 
         </ul>
       </div>
