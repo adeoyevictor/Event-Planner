@@ -33,6 +33,7 @@ const addEvent = () => {
   editBtn.addEventListener('click', (e) => {
     element.classList.add('hidden')
     const targetElement = e.currentTarget.parentElement
+    const oldElement = targetElement
 
     const nameValue = targetElement.querySelector('.event-name')
     const dateValue = targetElement.querySelector('.event-date')
@@ -41,11 +42,12 @@ const addEvent = () => {
     // eventName.value = nameValue.innerHTML
     // eventDate.value = dateValue.innerHTML
     // eventTime.value = timeValue.innerHTML
+
     const newElement = document.createElement('form')
     newElement.classList.add('save-form')
     newElement.addEventListener('submit', (e) => {
       e.preventDefault()
-      saveEvent(targetElement, newElement)
+      saveEvent(oldElement, newElement)
     })
     newElement.innerHTML = `  
        
@@ -59,7 +61,7 @@ const addEvent = () => {
     const saveBtn = newElement.querySelector('.save-btn')
     saveBtn.classList.add('save-btn')
     console.log(newName, newDate, newTime)
-    eventList.appendChild(newElement)
+    element.parentNode.replaceChild(newElement, element)
   })
   eventList.appendChild(element)
   console.log(element)
@@ -100,15 +102,16 @@ const getLocalStorage = () => {
     ? JSON.parse(localStorage.getItem('eventList'))
     : []
 }
-const saveEvent = (targetElement, newElement) => {
+const saveEvent = (oldElement, newElement) => {
   const newName = newElement.children[0].value
   const newDate = newElement.children[1].value
   const newTime = newElement.children[2].value
-  targetElement.querySelector('.event-name').innerHTML = newName
-  targetElement.querySelector('.event-date').innerHTML = newDate
-  targetElement.querySelector('.event-time').innerHTML = newTime
-
-  targetElement.classList.remove('hidden')
+  oldElement.querySelector('.event-name').innerHTML = newName
+  oldElement.querySelector('.event-date').innerHTML = newDate
+  oldElement.querySelector('.event-time').innerHTML = newTime
+  newElement.parentNode.replaceChild(oldElement, newElement)
+  // element.parentNode.replaceChild(newElement, element)
+  oldElement.classList.remove('hidden')
   newElement.classList.add('hidden')
   // console.log(nameValue)
 }
