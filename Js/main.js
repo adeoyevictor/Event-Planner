@@ -4,6 +4,8 @@ let eventDate = document.getElementById('eventDate')
 let eventTime = document.getElementById('eventTime')
 let addButton = document.getElementById('submit')
 let eventList = document.querySelector('.event-list')
+let eventListContainer = document.querySelector('.event-list-container')
+let clearEventBtn = document.querySelector('.clear-events')
 
 const addEvent = () => {
   const eventNameValue = eventName.value
@@ -14,7 +16,7 @@ const addEvent = () => {
   let attr = document.createAttribute('data-id')
   attr.value = id
   element.setAttributeNode(attr)
-  element.innerHTML = `<span class='event-name'>${eventNameValue}</span> <span class='event-date'>${eventDateValue}</span> <span class='event-time'>${eventTimeValue}</span> <br><button type='button' class='edit-btn'>Edit</button><button type='button' class='delete-btn'>Delete</button>`
+  element.innerHTML = `<span class='event-name'>${eventNameValue}</span> <span class='event-date'>${eventDateValue}</span> <span class='event-time'>${eventTimeValue}</span><button type='button' class='edit-btn'>Edit</button><button type='button' class='delete-btn'>Delete</button>`
 
   const deleteBtn = element.querySelector('.delete-btn')
   const editBtn = element.querySelector('.edit-btn')
@@ -36,6 +38,7 @@ const addEvent = () => {
     // eventDate.value = dateValue.innerHTML
     // eventTime.value = timeValue.innerHTML
     const newElement = document.createElement('form')
+    newElement.classList.add('save-form')
     newElement.addEventListener('submit', (e) => {
       e.preventDefault()
       saveEvent(targetElement, newElement)
@@ -45,11 +48,12 @@ const addEvent = () => {
         <input type="text" id="editEventName" value=${nameValue.innerHTML} required />
         <input type="date" id="editEventDate" value=${dateValue.innerHTML} required />
         <input type="time" id="editEventTime" value=${timeValue.innerHTML} required />
-        <button type="submit">Save</button>`
+        <button type="submit" class="save-btn">Save</button>`
     const newName = newElement.children[0].value
     const newDate = newElement.children[1].value
     const newTime = newElement.children[2].value
-
+    const saveBtn = newElement.querySelector('.save-btn')
+    saveBtn.classList.add('save-btn')
     console.log(newName, newDate, newTime)
     eventList.appendChild(newElement)
   })
@@ -65,6 +69,10 @@ form.addEventListener('submit', (event) => {
   addEvent()
 })
 
+// clearEventBtn.addEventListener('click', () => {
+//   console.log('clicked')
+//   eventListContainer.removeChild(eventList)
+// })
 const setBackToDefault = () => {
   eventName.value = ''
   eventDate.value = ''
