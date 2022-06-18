@@ -6,6 +6,9 @@
   margin: 0;
   box-sizing: border-box;
 }
+body {
+  /* background-color: red; */
+}
 .hidden {
   display: none;
 }
@@ -20,6 +23,7 @@
   color: #fff;
   font-family: 'Plus Jakarta Display';
   font-size: 28px;
+  font-weight: 500;
 }
 .sign-out button {
   padding: 10px 20px;
@@ -76,13 +80,13 @@ input {
   border: none;
   outline: none;
   height: 40px;
-  border: 2px solid #434d64;
+  border: 1px solid #ced4da;
   border-radius: 4px;
   font-family: 'Plus Jakarta Text';
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  color: #434d64;
+  color: #ced4da;
 }
 .event-list-container {
   display: flex;
@@ -139,7 +143,7 @@ span.event-time {
 .delete-btn {
   padding: 8px 16px;
   background-color: #fff;
-  color: #F04C4C;
+  color: #f04c4c;
   font-weight: 600;
   border: none;
   border-radius: 4px;
@@ -155,7 +159,7 @@ span.event-time {
 
 .clear-events {
   padding: 8px 16px;
-  background-color: #F04C4C;
+  background-color: #f04c4c;
   color: #fff;
   font-weight: 600;
   border: none;
