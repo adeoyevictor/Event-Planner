@@ -9,7 +9,7 @@ let clearEventBtn = document.querySelector('.clear-events')
 let userName = document.querySelector(".userName")
 
 userName.innerHTML = localStorage.getItem('user') ? localStorage.getItem('user') : `Echo`
-
+console.log('Testing');
 //Functions 
 function getEvents() {
   let eventList = getLocalStorage()
