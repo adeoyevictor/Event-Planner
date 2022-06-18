@@ -12,8 +12,11 @@ userName.innerHTML = localStorage.getItem('user') ? localStorage.getItem('user')
 console.log('Testing');
 //Functions 
 function getEvents() {
+  const userName = localStorage.getItem('user')
   let eventList = getLocalStorage()
-
+  eventList = eventList.filter(event => {
+    return event.userName == userName
+  })
   if (eventList.length > 0) {
     eventList.forEach(function (event) {
       createListItem(
@@ -25,7 +28,31 @@ function getEvents() {
     })
   }
 }
+const deleteEvent=(id)=> {
+  let eventList = getLocalStorage();
 
+  eventList = eventList.filter( (event)=> {
+    if (event.id !== id) {
+      return event;
+    }
+  });
+
+  localStorage.setItem("eventList", JSON.stringify(eventList));
+}
+const editEvent=(id, name, date, time)=> {
+  let eventList = getLocalStorage();
+
+  eventList = eventList.map( (event)=> {
+    if (event.id === id) {
+      event.eventNameValue = name
+      event.eventDateValue = date
+      event.eventTimeValue = time
+    }
+    return event;
+  });
+
+  localStorage.setItem("eventList", JSON.stringify(eventList));
+}
 const setBackToDefault = () => {
   eventName.value = ''
   eventDate.value = ''
@@ -46,6 +73,8 @@ const createListItem = (id, name, date, time) => {
   deleteBtn.addEventListener('click', (e) => {
     const targetElement = e.currentTarget.parentElement
     eventList.removeChild(targetElement)
+    deleteEvent(id)
+    console.log(targetElement)
   })
 
   editBtn.addEventListener('click', (e) => {
@@ -103,6 +132,7 @@ const addEvent = () => {
     const targetElement = e.currentTarget.parentElement
     console.log('clicked', e.currentTarget)
     eventList.removeChild(targetElement)
+    deleteEvent(id)
   })
 
   editBtn.addEventListener('click', (e) => {
@@ -152,7 +182,8 @@ const addToLocalStorage = (
   eventDateValue,
   eventTimeValue
 ) => {
-  const event = { id, eventNameValue, eventDateValue, eventTimeValue }
+  const userName = localStorage.getItem('user')
+  const event = { id, userName, eventNameValue, eventDateValue, eventTimeValue }
   let events = getLocalStorage()
   events.push(event)
   localStorage.setItem('eventList', JSON.stringify(events))
@@ -168,6 +199,7 @@ const saveEvent = (oldElement, newElement) => {
   const newName = newElement.children[0].value
   const newDate = newElement.children[1].value
   const newTime = newElement.children[2].value
+  const id = oldElement.dataset.id
   oldElement.querySelector('.event-name').innerHTML = newName
   oldElement.querySelector('.event-date').innerHTML = newDate
   oldElement.querySelector('.event-time').innerHTML = newTime
@@ -175,7 +207,7 @@ const saveEvent = (oldElement, newElement) => {
   // element.parentNode.replaceChild(newElement, element)
   oldElement.classList.remove('hidden')
   newElement.classList.add('hidden')
-  // console.log(nameValue)
+  editEvent(id, newName, newDate, newTime)
 }
 //
 
@@ -187,15 +219,16 @@ form.addEventListener('submit', (event) => {
 })
 
 clearEventBtn.addEventListener('click', () => {
+  const userName = localStorage.getItem('user')
   const events = document.querySelectorAll(".event-item")
   if (events.length > 0) {
     events.forEach(function (event) {
       eventList.removeChild(event)
     })
   }
-  localStorage.removeItem('eventList')  
+  let newEventList = getLocalStorage('eventList')
+  newEventList = newEventList.filter((event)=>{
+    return event.userName !== userName
+  })
+  localStorage.setItem('eventList', JSON.stringify(newEventList))  
 })
-
-
-
-
