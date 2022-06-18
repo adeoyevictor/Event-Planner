@@ -72,6 +72,7 @@ form {
 }
 .save-form {
   width: 100%;
+  margin-bottom: 5px;
 }
 input {
   width: 100%;
