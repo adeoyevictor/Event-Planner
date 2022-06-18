@@ -9,7 +9,6 @@ let clearEventBtn = document.querySelector('.clear-events')
 let userName = document.querySelector(".userName")
 
 userName.innerHTML = localStorage.getItem('user') ? localStorage.getItem('user') : `Echo`
-console.log('Testing');
 //Functions 
 function getEvents() {
   const userName = localStorage.getItem('user')
@@ -30,7 +29,7 @@ function getEvents() {
 }
 const deleteEvent=(id)=> {
   let eventList = getLocalStorage();
-
+// let eventList = localStorage.getItem('eventList');
   eventList = eventList.filter( (event)=> {
     if (event.id !== id) {
       return event;
@@ -130,13 +129,12 @@ const addEvent = () => {
 
   deleteBtn.addEventListener('click', (e) => {
     const targetElement = e.currentTarget.parentElement
-    console.log('clicked', e.currentTarget)
     eventList.removeChild(targetElement)
     deleteEvent(id)
   })
 
   editBtn.addEventListener('click', (e) => {
-    element.classList.add('hidden')
+    // element.classList.add('hidden')
     const targetElement = e.currentTarget.parentElement
     const oldElement = targetElement
 
@@ -160,12 +158,11 @@ const addEvent = () => {
         <input type="date" id="editEventDate" value=${dateValue.innerHTML} required />
         <input type="time" id="editEventTime" value=${timeValue.innerHTML} required />
         <button type="submit" class="save-btn">Save</button>`
-    const newName = newElement.children[0].value
-    const newDate = newElement.children[1].value
-    const newTime = newElement.children[2].value
+    // const newName = newElement.children[0].value
+    // const newDate = newElement.children[1].value
+    // const newTime = newElement.children[2].value
     const saveBtn = newElement.querySelector('.save-btn')
     saveBtn.classList.add('save-btn')
-    console.log(newName, newDate, newTime)
     element.parentNode.replaceChild(newElement, element)
   })
   eventList.appendChild(element)
@@ -205,8 +202,6 @@ const saveEvent = (oldElement, newElement) => {
   oldElement.querySelector('.event-time').innerHTML = newTime
   newElement.parentNode.replaceChild(oldElement, newElement)
   // element.parentNode.replaceChild(newElement, element)
-  oldElement.classList.remove('hidden')
-  newElement.classList.add('hidden')
   editEvent(id, newName, newDate, newTime)
 }
 //
