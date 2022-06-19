@@ -1,1 +1,33 @@
-<!-- main -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Planner</title>
+    <link rel="stylesheet" href="./assets/styles/main.css" />
+  </head>
+  <body>
+    <nav class="navigation">
+      <h1 class="header">Event Planner</h1>
+      <a href="./logout.html" class="sign-out"><button>Sign Out</button></a>
+    </nav>
+    <div class="event-body">
+      <h2 class="greeting">Hi, <span class="userName"></span></h2>
+      <form class="event-form">
+        <!-- <p class="alert"></p> -->
+        <input type="text" id="eventName" placeholder="Event Name" required />
+        <input type="date" id="eventDate" required />
+        <input type="time" id="eventTime" required />
+        <button type="submit" id="submit">Add Event</button>
+      </form>
+      <div class="event-list-container">
+        <ul class="event-list"></ul>
+      </div>
+      <div class="clear-events-container">
+        <button class="clear-events">Clear Events</button>
+      </div>
+    </div>
+    <script src="./Js/main.js"></script>
+  </body>
+</html>
