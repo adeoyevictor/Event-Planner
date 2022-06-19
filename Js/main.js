@@ -7,7 +7,35 @@ let eventList = document.querySelector('.event-list')
 let eventListContainer = document.querySelector('.event-list-container')
 let clearEventBtn = document.querySelector('.clear-events')
 let userName = document.querySelector(".userName")
+let alert = document.querySelector(".alert")
 
+function displayAlert(text, action) {
+  alert.textContent = text;
+  alert.classList.add(`alert-${action}`);
+  // remove alert
+  setTimeout(function () {
+    alert.textContent = "";
+    alert.classList.remove(`alert-${action}`);
+  }, 3000);
+}
+//const today = new Date().toISOString.split("T")[0]
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+let today = new Date()
+today = formatDate(today)
+console.log(today)
+eventDate.setAttribute("min",today)
 userName.innerHTML = localStorage.getItem('user') ? localStorage.getItem('user') : `Echo`
 //Functions 
 function getEvents() {
@@ -101,6 +129,7 @@ const createListItem = (id, name, date, time) => {
         <input type="date" id="editEventDate" value=${dateValue.innerHTML} required />
         <input type="time" id="editEventTime" value=${timeValue.innerHTML} required />
         <button type="submit" class="save-btn">Save</button>`
+        newElement.children[1].setAttribute("min", today)
     const newName = newElement.children[0].value
     const newDate = newElement.children[1].value
     const newTime = newElement.children[2].value
@@ -131,6 +160,7 @@ const addEvent = () => {
     const targetElement = e.currentTarget.parentElement
     eventList.removeChild(targetElement)
     deleteEvent(id)
+    displayAlert("Event Deleted","danger")
   })
 
   editBtn.addEventListener('click', (e) => {
@@ -167,7 +197,7 @@ const addEvent = () => {
   })
   eventList.appendChild(element)
   console.log(element)
-
+displayAlert("Event added to the list","success" )
   addToLocalStorage(id, eventNameValue, eventDateValue, eventTimeValue)
   setBackToDefault()
 }
@@ -201,8 +231,10 @@ const saveEvent = (oldElement, newElement) => {
   oldElement.querySelector('.event-date').innerHTML = newDate
   oldElement.querySelector('.event-time').innerHTML = newTime
   newElement.parentNode.replaceChild(oldElement, newElement)
+  displayAlert("Event Edited","success")
   // element.parentNode.replaceChild(newElement, element)
   editEvent(id, newName, newDate, newTime)
+
 }
 //
 
@@ -225,5 +257,6 @@ clearEventBtn.addEventListener('click', () => {
   newEventList = newEventList.filter((event)=>{
     return event.userName !== userName
   })
+  displayAlert("Events Cleared","danger")
   localStorage.setItem('eventList', JSON.stringify(newEventList))  
 })
