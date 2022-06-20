@@ -70,13 +70,13 @@ form {
   align-items: center;
   margin: 0 auto;
   margin-bottom: 50px;
-}  
+}
 @media only screen and (max-width: 768px) {
   form {
-  flex-direction: column;
+    flex-direction: column;
   }
 
-  input{
+  input {
     margin-bottom: 8px;
   }
 }
@@ -99,7 +99,6 @@ input {
   font-weight: 400;
   font-size: 14px;
   color: #14213d;
-
 }
 .alert {
   margin-bottom: 1rem;
@@ -107,7 +106,8 @@ input {
   display: grid;
   align-items: center;
   text-align: center;
-  font-size: 0.7rem;
+  font-size: 1rem;
+  font-weight: bold;
   border-radius: 0.25rem;
   letter-spacing: 0.25rem;
   text-transform: capitalize;
@@ -149,7 +149,6 @@ li {
   margin-bottom: 8px;
 }
 
-
 li span.event-name {
   width: 40%;
   font-family: 'Plus Jakarta Display';
@@ -175,7 +174,6 @@ span.event-time {
   font-family: 'Plus Jakarta Text';
   white-space: nowrap;
   cursor: pointer;
-  
 }
 .delete-btn {
   padding: 8px 16px;
@@ -188,27 +186,24 @@ span.event-time {
   font-family: 'Plus Jakarta Text';
   white-space: nowrap;
   cursor: pointer;
-
 }
 @media only screen and (max-width: 768px) {
   li {
     height: 115px;
     align-items: flex-start;
     position: relative;
-
   }
 
   .edit-btn {
-    position:absolute;
+    position: absolute;
     bottom: 16px;
-      right: 110px;
+    right: 110px;
   }
 
-  .delete-btn{
+  .delete-btn {
     position: absolute;
-    bottom:16px;
-    right:16px;
-
+    bottom: 16px;
+    right: 16px;
   }
 }
 .clear-events-container {

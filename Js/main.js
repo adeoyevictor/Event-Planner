@@ -101,7 +101,7 @@ const createListItem = (id, name, date, time) => {
     const targetElement = e.currentTarget.parentElement
     eventList.removeChild(targetElement)
     deleteEvent(id)
-    console.log(targetElement)
+    displayAlert('Event Deleted', 'danger')
   })
 
   editBtn.addEventListener('click', (e) => {
