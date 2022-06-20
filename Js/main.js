@@ -9,6 +9,10 @@ let clearEventBtn = document.querySelector('.clear-events')
 let userName = document.querySelector('.userName')
 let alert = document.querySelector('.alert')
 
+let allBtn = document.querySelector('.filter-tab').children[0]
+let completedBtn = document.querySelector('.filter-tab').children[1]
+let pendingBtn = document.querySelector('.filter-tab').children[2]
+
 function displayAlert(text, action) {
   alert.textContent = text
   alert.classList.add(`alert-${action}`)
@@ -39,18 +43,73 @@ userName.innerHTML = localStorage.getItem('user')
   : `Echo`
 //Functions
 function getEvents() {
+  const events = document.querySelectorAll('.event-item')
+  if (events.length > 0) {
+    events.forEach(function (event) {
+      eventList.removeChild(event)
+    })
+  }
   const userName = localStorage.getItem('user')
-  let eventList = getLocalStorage()
-  eventList = eventList.filter((event) => {
+  let newEventList = getLocalStorage()
+  newEventList = newEventList.filter((event) => {
     return event.userName == userName
   })
-  if (eventList.length > 0) {
-    eventList.forEach(function (event) {
+  if (newEventList.length > 0) {
+    newEventList.forEach(function (event) {
       createListItem(
         event.id,
         event.eventNameValue,
         event.eventDateValue,
-        event.eventTimeValue
+        event.eventTimeValue,
+        event.completed
+      )
+    })
+  }
+}
+function getPendingEvents() {
+  const events = document.querySelectorAll('.event-item')
+  if (events.length > 0) {
+    events.forEach(function (event) {
+      eventList.removeChild(event)
+    })
+  }
+  const userName = localStorage.getItem('user')
+  let newEventList = getLocalStorage()
+  newEventList = newEventList.filter((event) => {
+    return event.userName == userName && event.completed == false
+  })
+  if (newEventList.length > 0) {
+    newEventList.forEach(function (event) {
+      createListItem(
+        event.id,
+        event.eventNameValue,
+        event.eventDateValue,
+        event.eventTimeValue,
+        event.completed
+      )
+    })
+  }
+}
+function getCompletedEvents() {
+  const events = document.querySelectorAll('.event-item')
+  if (events.length > 0) {
+    events.forEach(function (event) {
+      eventList.removeChild(event)
+    })
+  }
+  const userName = localStorage.getItem('user')
+  let newEventList = getLocalStorage()
+  newEventList = newEventList.filter((event) => {
+    return event.userName == userName && event.completed == true
+  })
+  if (newEventList.length > 0) {
+    newEventList.forEach(function (event) {
+      createListItem(
+        event.id,
+        event.eventNameValue,
+        event.eventDateValue,
+        event.eventTimeValue,
+        event.completed
       )
     })
   }
@@ -62,6 +121,18 @@ const deleteEvent = (id) => {
     if (event.id !== id) {
       return event
     }
+  })
+
+  localStorage.setItem('eventList', JSON.stringify(eventList))
+}
+const toggleCompleted = (id) => {
+  let eventList = getLocalStorage()
+  // let eventList = localStorage.getItem('eventList');
+  eventList = eventList.map((event) => {
+    if (event.id == id) {
+      event.completed = !event.completed
+    }
+    return event
   })
 
   localStorage.setItem('eventList', JSON.stringify(eventList))
@@ -86,16 +157,19 @@ const setBackToDefault = () => {
   eventTime.value = ''
 }
 
-const createListItem = (id, name, date, time) => {
+const createListItem = (id, name, date, time, completed) => {
   const element = document.createElement('li')
   element.classList.add('event-item')
   let attr = document.createAttribute('data-id')
   attr.value = id
   element.setAttributeNode(attr)
-  element.innerHTML = `<span class='event-name'>${name}</span> <span class='event-date'>${date}</span> <span class='event-time'>${time}</span><button type='button' class='edit-btn'>Edit</button><button type='button' class='delete-btn'>Delete</button>`
-
+  element.innerHTML = `<input type="checkbox" name="completed" class="completed" id="${id}" /> <span class='event-name'>${name}</span> <span class='event-date'>${date}</span> <span class='event-time'>${time}</span><button type='button' class='edit-btn'>Edit</button><button type='button' class='delete-btn'>Delete</button>`
+  if (completed) {
+    element.children[0].setAttribute('checked', completed)
+  }
   const deleteBtn = element.querySelector('.delete-btn')
   const editBtn = element.querySelector('.edit-btn')
+  const completeBtn = element.querySelector('.completed')
 
   deleteBtn.addEventListener('click', (e) => {
     const targetElement = e.currentTarget.parentElement
@@ -104,8 +178,21 @@ const createListItem = (id, name, date, time) => {
     displayAlert('Event Deleted', 'danger')
   })
 
+  completeBtn.addEventListener('click', (e) => {
+    const targetElement = e.currentTarget.parentElement
+    const currentTab = localStorage.getItem('currentTab')
+    toggleCompleted(id)
+    if (currentTab == 'completed' && !targetElement.children[0].checked) {
+      eventList.removeChild(targetElement)
+    }
+    if (currentTab == 'pending' && targetElement.children[0].checked) {
+      eventList.removeChild(targetElement)
+    }
+    displayAlert('Event Updated', 'success')
+  })
+
   editBtn.addEventListener('click', (e) => {
-    element.classList.add('hidden')
+    // element.classList.add('hidden')
     const targetElement = e.currentTarget.parentElement
     const oldElement = targetElement
 
@@ -124,7 +211,6 @@ const createListItem = (id, name, date, time) => {
       saveEvent(oldElement, newElement)
     })
     newElement.innerHTML = `  
-       
         <input type="text" id="editEventName" value=${nameValue.innerHTML} required />
         <input type="date" id="editEventDate" value=${dateValue.innerHTML} required />
         <input type="time" id="editEventTime" value=${timeValue.innerHTML} required />
@@ -151,10 +237,11 @@ const addEvent = () => {
   let attr = document.createAttribute('data-id')
   attr.value = id
   element.setAttributeNode(attr)
-  element.innerHTML = `<span class='event-name'>${eventNameValue}</span> <span class='event-date'>${eventDateValue}</span> <span class='event-time'>${eventTimeValue}</span><button type='button' class='edit-btn'>Edit</button><button type='button' class='delete-btn'>Delete</button>`
+  element.innerHTML = `<input type="checkbox" name="completed" class="completed" id="${id}" /> <span class='event-name'>${eventNameValue}</span> <span class='event-date'>${eventDateValue}</span> <span class='event-time'>${eventTimeValue}</span><button type='button' class='edit-btn'>Edit</button><button type='button' class='delete-btn'>Delete</button>`
 
   const deleteBtn = element.querySelector('.delete-btn')
   const editBtn = element.querySelector('.edit-btn')
+  const completeBtn = element.querySelector('.completed')
 
   deleteBtn.addEventListener('click', (e) => {
     const targetElement = e.currentTarget.parentElement
@@ -163,11 +250,23 @@ const addEvent = () => {
     displayAlert('Event Deleted', 'danger')
   })
 
+  completeBtn.addEventListener('click', (e) => {
+    const targetElement = e.currentTarget.parentElement
+    const currentTab = localStorage.getItem('currentTab')
+    toggleCompleted(id)
+    if (currentTab == 'completed' && !targetElement.children[0].checked) {
+      eventList.removeChild(targetElement)
+    }
+    if (currentTab == 'pending' && targetElement.children[0].checked) {
+      eventList.removeChild(targetElement)
+    }
+    displayAlert('Event Updated', 'success')
+  })
+
   editBtn.addEventListener('click', (e) => {
     // element.classList.add('hidden')
     const targetElement = e.currentTarget.parentElement
     const oldElement = targetElement
-
     const nameValue = targetElement.querySelector('.event-name')
     const dateValue = targetElement.querySelector('.event-date')
     const timeValue = targetElement.querySelector('.event-time')
@@ -183,7 +282,6 @@ const addEvent = () => {
       saveEvent(oldElement, newElement)
     })
     newElement.innerHTML = `  
-       
         <input type="text" id="editEventName" value=${nameValue.innerHTML} required />
         <input type="date" id="editEventDate" value=${dateValue.innerHTML} required />
         <input type="time" id="editEventTime" value=${timeValue.innerHTML} required />
@@ -196,18 +294,42 @@ const addEvent = () => {
   eventList.appendChild(element)
   console.log(element)
   displayAlert('Event added to the list', 'success')
-  addToLocalStorage(id, eventNameValue, eventDateValue, eventTimeValue)
+  addToLocalStorage(id, eventNameValue, eventDateValue, eventTimeValue, false)
   setBackToDefault()
 }
 
+allBtn.addEventListener('click', () => {
+  localStorage.setItem('currentTab', 'all')
+  const oldTab = document.querySelector('.active')
+  oldTab.classList.remove('active')
+  allBtn.classList.add('active')
+  getEvents()
+})
+
+completedBtn.addEventListener('click', () => {
+  localStorage.setItem('currentTab', 'completed')
+  const oldTab = document.querySelector('.active')
+  oldTab.classList.remove('active')
+  completedBtn.classList.add('active')
+  getCompletedEvents()
+})
+
+pendingBtn.addEventListener('click', () => {
+  localStorage.setItem('currentTab', 'pending')
+  const oldTab = document.querySelector('.active')
+  oldTab.classList.remove('active')
+  pendingBtn.classList.add('active')
+  getPendingEvents()
+})
 const addToLocalStorage = (
   id,
   eventNameValue,
   eventDateValue,
-  eventTimeValue
+  eventTimeValue,
+  completed
 ) => {
   const userName = localStorage.getItem('user')
-  const event = { id, userName, eventNameValue, eventDateValue, eventTimeValue }
+  const event = { id, userName, eventNameValue, eventDateValue, eventTimeValue, completed }
   let events = getLocalStorage()
   events.push(event)
   localStorage.setItem('eventList', JSON.stringify(events))
@@ -222,7 +344,7 @@ const getLocalStorage = () => {
 const saveEvent = (oldElement, newElement) => {
   const newName = newElement.children[0].value
   const newDate = newElement.children[1].value
-  const newTime = newElement.children[2].value
+  const newTime = newElement.children[2].value 
   const id = oldElement.dataset.id
   oldElement.querySelector('.event-name').innerHTML = newName
   oldElement.querySelector('.event-date').innerHTML = newDate
@@ -232,7 +354,7 @@ const saveEvent = (oldElement, newElement) => {
   // element.parentNode.replaceChild(newElement, element)
   editEvent(id, newName, newDate, newTime)
 }
-//
+
 
 window.addEventListener('DOMContentLoaded', getEvents)
 
